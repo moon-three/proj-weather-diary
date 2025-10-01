@@ -4,6 +4,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import seohee.weather.domain.Diary;
 
-//@Repository
-//public interface DiaryRepository extends JpaRepository<Diary, Integer> {
-//}
+@Repository
+public interface DiaryRepository extends JpaRepository<Diary, Integer> {
+}
