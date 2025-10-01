@@ -55,4 +55,13 @@ public class DiaryController {
                      ) {
         diaryService.updateDiary(date, text);
     }
+
+    /** 일기 삭제
+     */
+    @DeleteMapping("/delete/diary")
+    void deleteDiary(@RequestParam
+                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+                     ) {
+        diaryService.deleteDiary(date);
+    }
 }

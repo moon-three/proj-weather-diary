@@ -63,6 +63,10 @@ public class DiaryService {
         diaryRepository.save(nowDiary);
     }
 
+    public void deleteDiary(LocalDate date) {
+        diaryRepository.deleteAllByDate(date);
+    }
+
     /** open-weather-map 에서 날씨 데이터 가져오기
      * @return String (날씨 데이터를 문자열 형태로 반환)
      */
