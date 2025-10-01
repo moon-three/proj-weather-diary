@@ -55,6 +55,13 @@ public class DiaryService {
         return diaryRepository.findAllByDateBetween(startDate, endDate);
     }
 
+    public void updateDiary(LocalDate date, String text) {
+        // 해당 날짜의 첫번째 일기 수정
+        Diary nowDiary = diaryRepository.getFirstByDate(date);
+        nowDiary.setText(text);
+
+        diaryRepository.save(nowDiary);
+    }
 
     /** open-weather-map 에서 날씨 데이터 가져오기
      * @return String (날씨 데이터를 문자열 형태로 반환)
