@@ -4,11 +4,14 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
+import seohee.weather.WeatherApplication;
 import seohee.weather.domain.DateWeather;
 import seohee.weather.domain.Diary;
 import seohee.weather.repository.DateWeatherRepository;
@@ -29,6 +32,8 @@ public class DiaryService {
     @Value("${openweathermap.key}")
     private String apiKey;
 
+    private static final Logger logger = LoggerFactory.getLogger(WeatherApplication.class);
+
     private final DiaryRepository diaryRepository;
     private final DateWeatherRepository dateWeatherRepository;
     public DiaryService(DiaryRepository diaryRepository,
@@ -39,6 +44,7 @@ public class DiaryService {
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public void createDiary(LocalDate date, String text) {
+        logger.info("started to create diary");
         // 날씨 데이터 가져오기 (API에서 가져오기? vs DB에서 가져오기✅)
         DateWeather dateWeather = getDateWeather(date);
 
@@ -48,10 +54,12 @@ public class DiaryService {
         nowDiary.setText(text);
 
         diaryRepository.save(nowDiary);
+        logger.info("end to create diary");
     }
 
     @Transactional(readOnly = true)
     public List<Diary> readDiary(LocalDate date) {
+        logger.debug("read diary");
         return diaryRepository.findAllByDate(date);
     }
 
@@ -137,6 +145,7 @@ public class DiaryService {
     @Transactional
     @Scheduled(cron = "0 0 1 * * *")    // cron 을 통해 스케줄링 작업 주기 설정 (초 분 시 일 월 요일)
     public void saveWeatherDate() {
+        logger.info("오늘도 날씨 데이터 잘 가져옴!");
         dateWeatherRepository.save(getWeatherFromApi());
     }
 
