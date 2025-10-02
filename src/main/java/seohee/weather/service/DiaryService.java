@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import seohee.weather.WeatherApplication;
 import seohee.weather.domain.DateWeather;
 import seohee.weather.domain.Diary;
-import seohee.weather.exception.InvalidDateException;
 import seohee.weather.repository.DateWeatherRepository;
 import seohee.weather.repository.DiaryRepository;
 
@@ -136,7 +135,7 @@ public class DiaryService {
         resultMap.put("temp", mainData.get("temp"));
 
         JSONArray weatherArray = (JSONArray) jsonObject.get("weather");
-        JSONObject weatherData = (JSONObject) weatherArray.getFirst();
+        JSONObject weatherData = (JSONObject) weatherArray.get(0);
         resultMap.put("main", weatherData.get("main"));
         resultMap.put("icon", weatherData.get("icon"));
 
@@ -180,7 +179,7 @@ public class DiaryService {
             // 정책상,, 현재 날씨 가져오기 ✅ vs 날씨없이 일기 쓰기
             return getWeatherFromApi();
         } else {
-            return dateWeatherListFromDB.getFirst();
+            return dateWeatherListFromDB.get(0);
         }
     }
 
