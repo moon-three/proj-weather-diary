@@ -47,11 +47,11 @@ public class DiaryController {
     List<Diary> readDiaries(
             @RequestParam
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            @Parameter(description = "조회할 기간의 시작 날짜", example = "2025-02-02")
+            @Parameter(description = "조회할 기간의 시작 날짜", example = "2025-01-01")
             LocalDate startDate,
             @RequestParam
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-            @Parameter(description = "조회할 기간의 마지막 날짜", example = "2025-02-02")
+            @Parameter(description = "조회할 기간의 마지막 날짜", example = "2025-01-31")
             LocalDate endDate
             ) {
         return diaryService.readDiaries(startDate, endDate);
@@ -59,9 +59,12 @@ public class DiaryController {
 
     /** 일기 수정
      */
+    @Operation(summary = "선택한 날짜의 첫번째 일기 내용을 수정합니다.")
     @PutMapping("update/diary")
     void updateDiary(@RequestParam
-                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                     @Parameter(description = "날짜 형식 : yyyy-MM-dd",example = "2025-02-02")
+                     LocalDate date,
                      @RequestBody String text
                      ) {
         diaryService.updateDiary(date, text);
@@ -69,9 +72,12 @@ public class DiaryController {
 
     /** 일기 삭제
      */
+    @Operation(summary = "선택한 날짜의 일기를 전부 삭제합니다.")
     @DeleteMapping("/delete/diary")
     void deleteDiary(@RequestParam
-                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date
+                     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                     @Parameter(description = "날짜 형식 : yyyy-MM-dd",example = "2025-02-02")
+                     LocalDate date
                      ) {
         diaryService.deleteDiary(date);
     }
