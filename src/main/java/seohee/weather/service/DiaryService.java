@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import seohee.weather.WeatherApplication;
 import seohee.weather.domain.DateWeather;
 import seohee.weather.domain.Diary;
+import seohee.weather.exception.InvalidDateException;
 import seohee.weather.repository.DateWeatherRepository;
 import seohee.weather.repository.DiaryRepository;
 
@@ -59,7 +60,9 @@ public class DiaryService {
 
     @Transactional(readOnly = true)
     public List<Diary> readDiary(LocalDate date) {
-        logger.debug("read diary");
+//        if(date.isAfter(LocalDate.ofYearDay(3050, 1))) {
+//            throw new InvalidDateException();
+//        }
         return diaryRepository.findAllByDate(date);
     }
 
